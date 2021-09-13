@@ -1,6 +1,6 @@
-package com.company.v4;
+package com.company.v5.input;
 
-public class CommandLineInputs {
+public class CommandLineInputs implements Input {
 
     private  String[] args;
 
