@@ -2,6 +2,7 @@ package com.company.v5;
 
 import com.company.v5.input.CommandLineInputs;
 import com.company.v5.input.Input;
+import com.company.v5.operation.InvalidCalcOperationException;
 import com.company.v5.operation.Operation;
 import com.company.v5.operation.OperationFactory;
 import com.company.v5.repository.FileNumberRepository;
@@ -31,8 +32,14 @@ public class CalculatorApp {
         String operator = inputs.getOperator();
         Double[] numbers = numberRepository.getNumbers();
         Operation operation = operationFactory.getInstance(operator);
-        Double result = operation.execute(numbers);
-        ui.showMessage("The result is "+result);
+        Double result = null;
+        try {
+            result = operation.execute(numbers);
+        } catch (InvalidCalcOperationException e) {
+            ui.showMessage("Error Occurred " + e.getMessage());
+            return;
+        }
+        ui.showMessage("The result is " + result);
 
     }
 }
