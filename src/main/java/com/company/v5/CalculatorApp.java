@@ -2,11 +2,13 @@ package com.company.v5;
 
 import com.company.v5.input.CommandLineInputs;
 import com.company.v5.input.Input;
+import com.company.v5.input.InvalidInputException;
 import com.company.v5.operation.InvalidCalcOperationException;
 import com.company.v5.operation.Operation;
 import com.company.v5.operation.OperationFactory;
 import com.company.v5.repository.FileNumberRepository;
 import com.company.v5.repository.NumberRepository;
+import com.company.v5.repository.NumberRepositoryException;
 import com.company.v5.ui.CmdLineUI;
 import com.company.v5.ui.UI;
 
@@ -27,19 +29,15 @@ public class CalculatorApp {
         this.ui = ui;
     }
 
-    public void execute() throws IOException { //we will change this in future
-
+    public void execute(){
+        try{
         String operator = inputs.getOperator();
         Double[] numbers = numberRepository.getNumbers();
         Operation operation = operationFactory.getInstance(operator);
-        Double result = null;
-        try {
-            result = operation.execute(numbers);
-        } catch (InvalidCalcOperationException e) {
-            ui.showMessage("Error Occurred " + e.getMessage());
-            return;
-        }
+        Double result = operation.execute(numbers);
         ui.showMessage("The result is " + result);
-
+        } catch (InvalidCalcOperationException | NumberRepositoryException | InvalidInputException e) {
+            ui.showMessage("Error Occurred " + e.getMessage());
+        }
     }
 }
